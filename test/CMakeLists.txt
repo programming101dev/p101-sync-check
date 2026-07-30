@@ -16,7 +16,7 @@ if (P101_TEST_COVERAGE)
     set(_COV --coverage)
 endif ()
 
-set(P101_LIBS p101_error p101_env p101_c p101_posix p101_unix p101_fsm p101_convert)
+set(P101_LIBS p101_error p101_tool_event p101_env p101_c p101_posix p101_unix)
 set(P101_PUBLIC_INCLUDE_DIRS "" CACHE STRING "Extra p101 include dirs")
 set(P101_PUBLIC_LINK_DIRS "" CACHE STRING "Extra p101 link dirs")
 separate_arguments(P101_PUBLIC_INCLUDE_DIRS_LIST NATIVE_COMMAND "${P101_PUBLIC_INCLUDE_DIRS}")
@@ -50,8 +50,5 @@ function(p101_add_test name)
     add_test(NAME ${name} COMMAND ${name})
 endfunction()
 
-# Tests THIS project's own code: compiles src/fsm.c and exercises run_fsm().
-p101_add_test(test_fsm test_fsm.c "${CMAKE_CURRENT_SOURCE_DIR}/../src/fsm.c")
-
-# Example of testing a p101 wrapper this project links (no project code needed).
-p101_add_test(test_p101_string test_p101_string.c)
+# Tests the deterministic event-stream model.
+p101_add_test(test_concurrency test_concurrency.c "${CMAKE_CURRENT_SOURCE_DIR}/../src/concurrency.c" "${CMAKE_CURRENT_SOURCE_DIR}/../src/concurrency_graph.c" "${CMAKE_CURRENT_SOURCE_DIR}/../src/concurrency_identity.c")

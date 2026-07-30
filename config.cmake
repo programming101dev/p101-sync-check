@@ -1,6 +1,6 @@
-set(PROJECT_NAME "template-c-program")
+set(PROJECT_NAME "p101-sync-check")
 set(PROJECT_VERSION "1.0.0")
-set(PROJECT_DESCRIPTION "Template C Project")
+set(PROJECT_DESCRIPTION "Analyze p101 synchronization event streams")
 set(PROJECT_LANGUAGE "C")
 
 set(CMAKE_C_STANDARD 17)
@@ -27,18 +27,21 @@ set(BSD_STANDARD_FLAGS
 # Define targets
 set(EXECUTABLE_TARGETS main)
 set(LIBRARY_TARGETS "")
+set(main_OUTPUT_NAME "p101-sync-check")
 
 set(main_SOURCES
-        src/cli.c
-        src/fsm.c
+        src/concurrency.c
+        src/concurrency_finding.c
+        src/concurrency_graph.c
+        src/concurrency_identity.c
+        src/concurrency_runner.c
         src/main.c
 )
 
 set(main_HEADERS
-        include/arguments.h
-        include/cli.h
-        include/errors.h
-        include/fsm.h
+        include/concurrency.h
+        include/concurrency_finding.h
+        include/concurrency_types.h
 )
 
 set(main_LINK_LIBRARIES
@@ -48,7 +51,5 @@ set(main_LINK_LIBRARIES
         p101_c
         p101_posix
         p101_unix
-        p101_fsm
-        p101_convert
         m
 )
