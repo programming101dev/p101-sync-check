@@ -15,6 +15,13 @@ static void report_json(const struct p101_env *env, struct p101_error *err, cons
 static void json_string(const struct p101_env *env, struct p101_error *err, const char *text);
 static bool analysis_has_trouble(const struct p101_sync_check_model *model);
 
+#ifdef P101_TESTING
+void p101_sync_check_test_json_string(const struct p101_env *env, struct p101_error *err, const char *text)
+{
+    json_string(env, err, text);
+}
+#endif
+
 int p101_sync_check_analyze(const struct p101_env *env, struct p101_error *err, FILE *stream, bool json)
 {
     struct p101_sync_check_model *model;

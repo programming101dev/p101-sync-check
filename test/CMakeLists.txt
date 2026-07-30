@@ -43,7 +43,7 @@ endforeach ()
 # project's own sources it exercises (NOT main.c, which defines main()).
 function(p101_add_test name)
     add_executable(${name} ${ARGN})
-    target_include_directories(${name} PRIVATE ${_P101_INC_DIRS} "${CMAKE_CURRENT_SOURCE_DIR}/../include")
+    target_include_directories(${name} PRIVATE ${_P101_INC_DIRS} "${CMAKE_CURRENT_SOURCE_DIR}/../include" "${CMAKE_CURRENT_SOURCE_DIR}/../src")
     target_link_libraries(${name} PRIVATE unity ${_P101_RESOLVED} m)
     target_compile_options(${name} PRIVATE ${_COV})
     target_link_options(${name} PRIVATE ${_COV})
@@ -51,4 +51,19 @@ function(p101_add_test name)
 endfunction()
 
 # Tests the deterministic event-stream model.
-p101_add_test(test_concurrency test_concurrency.c "${CMAKE_CURRENT_SOURCE_DIR}/../src/concurrency.c" "${CMAKE_CURRENT_SOURCE_DIR}/../src/concurrency_graph.c" "${CMAKE_CURRENT_SOURCE_DIR}/../src/concurrency_identity.c")
+p101_add_test(test_concurrency test_concurrency.c "${CMAKE_CURRENT_SOURCE_DIR}/../src/concurrency.c" "${CMAKE_CURRENT_SOURCE_DIR}/../src/concurrency_graph.c" "${CMAKE_CURRENT_SOURCE_DIR}/../src/concurrency_identity.c" "${CMAKE_CURRENT_SOURCE_DIR}/../src/concurrency_finding.c" "${CMAKE_CURRENT_SOURCE_DIR}/../src/concurrency_runner.c")
+target_compile_definitions(test_concurrency PRIVATE P101_TESTING=1)
+
+add_executable(p101_sync_check_coverage_cli
+    ../src/concurrency.c
+    ../src/concurrency_finding.c
+    ../src/concurrency_graph.c
+    ../src/concurrency_identity.c
+    ../src/concurrency_runner.c
+    ../src/main.c
+)
+target_include_directories(p101_sync_check_coverage_cli PRIVATE ${_P101_INC_DIRS} "${CMAKE_CURRENT_SOURCE_DIR}/../include" "${CMAKE_CURRENT_SOURCE_DIR}/../src")
+target_link_libraries(p101_sync_check_coverage_cli PRIVATE ${_P101_RESOLVED} m)
+target_compile_options(p101_sync_check_coverage_cli PRIVATE ${_COV})
+target_link_options(p101_sync_check_coverage_cli PRIVATE ${_COV})
+add_test(NAME test_cli COMMAND bash "${CMAKE_CURRENT_SOURCE_DIR}/test_cli.sh" "$<TARGET_FILE:p101_sync_check_coverage_cli>")

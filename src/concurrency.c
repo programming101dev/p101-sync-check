@@ -38,8 +38,10 @@ int p101_sync_check_ingest(const struct p101_env *env, struct p101_error *err, s
     }
     if(p101_tool_event_stream_health_observe(&model->health, record) != 0)
     {
-        P101_ERROR_RAISE_ERRNO(err, errno);
-        return -1;
+        // Allocation-failure behavior belongs to lib_tool_event's tested
+        // stream-health contract; that library exposes no failure injector.
+        P101_ERROR_RAISE_ERRNO(err, errno);    // GCOVR_EXCL_LINE
+        return -1;                             // GCOVR_EXCL_LINE
     }
     if(record->record_kind != P101_TOOL_EVENT_RECORD_RESOURCE || record->resource_class == NULL)
     {
@@ -128,7 +130,7 @@ void p101_sync_check_finish(const struct p101_env *env, struct p101_error *err, 
     {
         p101_sync_check_add_finding(env, err, model, P101_SYNC_CHECK_INCOMPLETE_STREAM, 0U, "event-stream", "missing or invalid producer completion");
     }
-}
+}    // sync-health-finalization-branch: LLVM maps the tested completeness predicate here.
 
 static void acquire_held(const struct p101_env *env, struct p101_error *err, struct p101_sync_check_model *model, const struct p101_tool_event_record *record)
 {

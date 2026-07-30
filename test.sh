@@ -118,3 +118,12 @@ if [ "$coverage" -eq 1 ]; then
 fi
 echo ">> building tests"; cmake --build "$test_bd"
 echo ">> ctest"; ( cd "$test_bd" && ctest --output-on-failure ${ctest_args[@]+"${ctest_args[@]}"} )
+if [ "$coverage" -eq 1 ]; then
+  gcov_tool="gcov"
+  if [[ "$ccbase" == clang* ]]; then
+    gcov_tool="llvm-cov gcov"
+  fi
+  gcovr --gcov-executable "$gcov_tool" --root . "$test_bd" \
+    --fail-under-line 100 --fail-under-branch 100 \
+    --txt-metric line --txt
+fi

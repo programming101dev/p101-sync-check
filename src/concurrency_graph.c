@@ -111,7 +111,7 @@ bool p101_sync_check_wait_reaches(const struct p101_env *env, const struct p101_
         {
             break;
         }
-    }
+    }    // GCOVR_EXCL_LINE -- the loop always returns or reaches its explicit fixed-point break.
     return false;
 }
 
@@ -193,7 +193,7 @@ static bool edge_reaches(const struct p101_env *env, const struct p101_sync_chec
         {
             break;
         }
-    }
+    }    // GCOVR_EXCL_LINE -- the loop always returns or reaches its explicit fixed-point break.
     return false;
 }
 
