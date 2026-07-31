@@ -27,7 +27,8 @@ Admitted input:
 
 - v4 `P101RESOURCE` records parsed by `lib_tool_event`;
 - `pthread-mutex-held` ownership records;
-- mutex, condition, rwlock, and join wait records emitted by `lib_posix`;
+- mutex, condition, and rwlock records emitted by `lib_sync`, plus thread join
+  records emitted by `lib_thread`;
 - one clean completion receipt for every `(pid, context)` producer.
 
 Output:

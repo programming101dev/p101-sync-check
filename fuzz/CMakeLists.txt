@@ -13,7 +13,7 @@ if (NOT CMAKE_C_COMPILER_ID MATCHES "Clang")
     message(FATAL_ERROR "Fuzzing needs clang with libFuzzer (-fsanitize=fuzzer); got '${CMAKE_C_COMPILER_ID}'. Use ./fuzz.sh, which picks a fuzzer-capable clang.")
 endif ()
 
-set(P101_LIBS p101_error p101_tool_event p101_env p101_c)
+set(P101_LIBS p101_error p101_env p101_tool_event p101_c)
 set(P101_PUBLIC_INCLUDE_DIRS "" CACHE STRING "Extra p101 include dirs")
 set(P101_PUBLIC_LINK_DIRS "" CACHE STRING "Extra p101 link dirs")
 separate_arguments(P101_PUBLIC_INCLUDE_DIRS_LIST NATIVE_COMMAND "${P101_PUBLIC_INCLUDE_DIRS}")
@@ -42,7 +42,8 @@ set(_FUZZ_FLAGS -fsanitize=fuzzer,address,undefined -g -O1)
 
 add_executable(fuzz fuzz_parse.c
                     "${CMAKE_CURRENT_SOURCE_DIR}/../src/concurrency.c"
-                    "${CMAKE_CURRENT_SOURCE_DIR}/../src/concurrency_graph.c")
+                    "${CMAKE_CURRENT_SOURCE_DIR}/../src/concurrency_graph.c"
+                    "${CMAKE_CURRENT_SOURCE_DIR}/../src/concurrency_identity.c")
 
 target_include_directories(fuzz PRIVATE ${_P101_INC_DIRS} "${CMAKE_CURRENT_SOURCE_DIR}/../include")
 target_compile_options(fuzz PRIVATE ${_FUZZ_FLAGS})

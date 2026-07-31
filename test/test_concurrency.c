@@ -215,6 +215,11 @@ static void test_contracts_identity_and_release_paths(void)
     p101_sync_check_physical_resource(env, name, &record);
 
     TEST_ASSERT_EQUAL_STRING("P101-SYNC-000", p101_sync_check_finding_id((enum p101_sync_check_finding_kind)999));
+    TEST_ASSERT_EQUAL_STRING("P101-SYNC-001", p101_sync_check_finding_id(P101_SYNC_CHECK_LOCK_ORDER_CYCLE));
+    TEST_ASSERT_EQUAL_STRING("P101-SYNC-002", p101_sync_check_finding_id(P101_SYNC_CHECK_WAIT_CYCLE));
+    TEST_ASSERT_EQUAL_STRING("P101-SYNC-003", p101_sync_check_finding_id(P101_SYNC_CHECK_JOIN_CYCLE));
+    TEST_ASSERT_EQUAL_STRING("P101-SYNC-900", p101_sync_check_finding_id(P101_SYNC_CHECK_INCOMPLETE_STREAM));
+    TEST_ASSERT_EQUAL_STRING("P101-SYNC-901", p101_sync_check_finding_id(P101_SYNC_CHECK_CAPACITY));
     TEST_ASSERT_EQUAL_STRING("unknown synchronization finding", p101_sync_check_finding_message((enum p101_sync_check_finding_kind)999));
     p101_sync_check_model_destroy(env, &model);
 }

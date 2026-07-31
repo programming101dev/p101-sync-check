@@ -2,7 +2,6 @@
 #include "concurrency_runner.h"
 #include <p101_c/p101_stdio.h>
 #include <p101_c/p101_string.h>
-#include <p101_posix/p101_stdio.h>
 #include <stdbool.h>
 
 static void usage(const struct p101_env *env, struct p101_error *err, const char *program);
