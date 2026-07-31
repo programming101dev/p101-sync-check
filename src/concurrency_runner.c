@@ -28,7 +28,7 @@ int p101_sync_check_analyze(const struct p101_env *env, struct p101_error *err, 
     char                          line[P101_TOOL_EVENT_LINE_MAX_BYTES];
     int                           result;
 
-    model = p101_calloc(env, err, 1U, sizeof(*model));
+    model = (struct p101_sync_check_model *)p101_calloc(env, err, 1U, sizeof(*model));
     if(model == NULL || p101_error_has_error(err))
     {
         return P101_SYNC_CHECK_EXIT_TROUBLE;

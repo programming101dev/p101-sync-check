@@ -1,5 +1,10 @@
 # p101-sync-check
 
+> **Workflow role:** this binary is the standalone synchronization-policy
+> reference implementation. The ordinary `p101 analyze` workflow builds one
+> shared run model and `p101 sync-check ANALYSIS_DIR` renders its
+> synchronization-policy view without reparsing the event stream.
+
 `p101-sync-check` analyzes synchronization events emitted by the p101 pthread
 wrappers. It finds lock-order cycles, live wait-for cycles, join cycles, and
 incomplete event streams. Its v4 `P101RESOURCE` input remains readable text;
