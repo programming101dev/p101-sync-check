@@ -40,6 +40,7 @@ static void resource_for_pid(struct p101_sync_check_model *model, long pid, size
     struct p101_tool_event_record record = {0};
 
     record.version        = P101_TOOL_EVENT_LOG_VERSION;
+    record.run_id         = "sync-test";
     record.record_kind    = P101_TOOL_EVENT_RECORD_RESOURCE;
     record.pid            = pid;
     record.context_id     = 1U;
@@ -62,6 +63,7 @@ static void complete_for_pid(struct p101_sync_check_model *model, long pid, size
     struct p101_tool_event_record record = {0};
 
     record.version          = P101_TOOL_EVENT_LOG_VERSION;
+    record.run_id           = "sync-test";
     record.record_kind      = P101_TOOL_EVENT_RECORD_COMPLETE;
     record.pid              = pid;
     record.context_id       = 1U;
@@ -184,6 +186,11 @@ static void test_contracts_identity_and_release_paths(void)
     TEST_ASSERT_TRUE(p101_error_has_error(error));
     p101_error_reset(error);
 
+    record.version     = P101_TOOL_EVENT_LOG_VERSION;
+    record.run_id      = "sync-test";
+    record.pid         = 1;
+    record.context_id  = 1U;
+    record.sequence    = 1U;
     record.record_kind = P101_TOOL_EVENT_RECORD_CALL;
     TEST_ASSERT_EQUAL_INT(0, p101_sync_check_ingest(env, error, &model, &record));
     record.record_kind    = P101_TOOL_EVENT_RECORD_RESOURCE;
@@ -305,6 +312,7 @@ static void test_propagated_and_allocation_failures(void)
     model.held_count      = P101_SYNC_CHECK_MAX_HELD;
     model.finding_count   = P101_SYNC_CHECK_MAX_FINDINGS;
     record.version        = P101_TOOL_EVENT_LOG_VERSION;
+    record.run_id         = "sync-test";
     record.record_kind    = P101_TOOL_EVENT_RECORD_RESOURCE;
     record.pid            = 1;
     record.context_id     = 1U;

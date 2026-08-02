@@ -21,19 +21,19 @@ run_expect() {
 
 cat >"$work/clean.log" <<'LOG'
 ordinary output
-P101RESOURCE	4	1	1	1	100	200	ACQUIRE	pthread-mutex-held	A@thread=one	-	0	thread=one	10	lock	clean.c
-P101RESOURCE	4	1	1	2	110	210	RELEASE	pthread-mutex-held	A@thread=one	-	0	thread=one	11	unlock	clean.c
-P101COMPLETE	4	1	1	3	120	220	2	0	0
+P101RESOURCE	5	test-run	1	1	1	100	200	ACQUIRE	pthread-mutex-held	A@thread=one	-	0	thread=one	10	lock	clean.c
+P101RESOURCE	5	test-run	1	1	2	110	210	RELEASE	pthread-mutex-held	A@thread=one	-	0	thread=one	11	unlock	clean.c
+P101COMPLETE	5	test-run	1	1	3	120	220	2	0	0
 LOG
 
 cat >"$work/cycle.log" <<'LOG'
-P101RESOURCE	4	1	1	1	100	200	ACQUIRE	pthread-mutex-held	A@thread=one	-	0	thread=one	10	lock	cycle.c
-P101RESOURCE	4	1	1	2	110	210	ACQUIRE	pthread-mutex-held	B@thread=one	-	0	thread=one	11	lock	cycle.c
-P101RESOURCE	4	1	1	3	120	220	RELEASE	pthread-mutex-held	B@thread=one	-	0	thread=one	12	unlock	cycle.c
-P101RESOURCE	4	1	1	4	130	230	RELEASE	pthread-mutex-held	A@thread=one	-	0	thread=one	13	unlock	cycle.c
-P101RESOURCE	4	1	1	5	140	240	ACQUIRE	pthread-mutex-held	B@thread=two	-	0	thread=two	14	lock	cycle.c
-P101RESOURCE	4	1	1	6	150	250	ACQUIRE	pthread-mutex-held	A@thread=two	-	0	thread=two	15	lock	cycle.c
-P101COMPLETE	4	1	1	7	160	260	6	0	0
+P101RESOURCE	5	test-run	1	1	1	100	200	ACQUIRE	pthread-mutex-held	A@thread=one	-	0	thread=one	10	lock	cycle.c
+P101RESOURCE	5	test-run	1	1	2	110	210	ACQUIRE	pthread-mutex-held	B@thread=one	-	0	thread=one	11	lock	cycle.c
+P101RESOURCE	5	test-run	1	1	3	120	220	RELEASE	pthread-mutex-held	B@thread=one	-	0	thread=one	12	unlock	cycle.c
+P101RESOURCE	5	test-run	1	1	4	130	230	RELEASE	pthread-mutex-held	A@thread=one	-	0	thread=one	13	unlock	cycle.c
+P101RESOURCE	5	test-run	1	1	5	140	240	ACQUIRE	pthread-mutex-held	B@thread=two	-	0	thread=two	14	lock	cycle.c
+P101RESOURCE	5	test-run	1	1	6	150	250	ACQUIRE	pthread-mutex-held	A@thread=two	-	0	thread=two	15	lock	cycle.c
+P101COMPLETE	5	test-run	1	1	7	160	260	6	0	0
 LOG
 
 run_expect 0 -h
@@ -55,13 +55,13 @@ run_expect 0 <"$work/clean.log"
 
 printf 'P101RESOURCE\t99\t1\t1\t1\t100\t200\tACQUIRE\tpthread-mutex-held\tA\t-\t0\tthread=one\t1\tlock\ta.c\n' >"$work/unsupported.log"
 run_expect 2 "$work/unsupported.log"
-printf 'P101RESOURCE\t4\tbad\n' >"$work/malformed.log"
+printf 'P101RESOURCE\t5\ttest-run\tbad\n' >"$work/malformed.log"
 run_expect 2 "$work/malformed.log"
-printf 'P101RESOURCE\t4\t1\t1\t1\t100\t200\tACQUIRE\tpthread-mutex-held\tA\t-\t0\tthread=one\t1\tlock\ta.c\n' >"$work/incomplete.log"
+printf 'P101RESOURCE\t5\ttest-run\t1\t1\t1\t100\t200\tACQUIRE\tpthread-mutex-held\tA\t-\t0\tthread=one\t1\tlock\ta.c\n' >"$work/incomplete.log"
 run_expect 2 "$work/incomplete.log"
 
 {
-  printf 'P101RESOURCE\t4\t1\t1\t1\t100\t200\tACQUIRE\tpthread-mutex-held\t'
+  printf 'P101RESOURCE\t5\ttest-run\t1\t1\t1\t100\t200\tACQUIRE\tpthread-mutex-held\t'
   printf '%05000d' 0
   printf '\t-\t0\tthread=one\t1\tlock\ta.c\n'
 } >"$work/overlong.log"
